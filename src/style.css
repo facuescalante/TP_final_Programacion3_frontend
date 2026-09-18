@@ -1,0 +1,230 @@
+:root {                                                          /* Variables globales de diseño */
+    --primary: #0d6efd;                                           /* Color primario (azul) */
+    --primary-hover: #0b5ed7;                                     /* Estado hover primario */
+    --danger: #dc3545;                                            /* Color de eliminación (rojo) */
+    --danger-bg: #fff0f1;                                         /* Fondo suave para botón eliminar */
+    --bg-color: #f8f9fa;                                          /* Fondo de la aplicación */
+    --card-bg: #ffffff;                                           /* Fondo de tarjetas e ítems */
+    --border-color: #dee2e6;                                      /* Borde estándar */
+    --radius: 8px;                                                /* Redondeo de bordes general */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }            /* Normalización básica de box-sizing */
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;           /* Fuente del sistema */
+    background-color: var(--bg-color);                             /* Color de fondo general */
+    color: #212529;                                               /* Color de texto principal */
+    padding: 20px;
+    max-width: 800px;                                             /* Ancho máximo centrado */
+    margin: 0 auto;
+}
+
+header {
+    display: flex;                                                /* Distribución alineada del encabezado */
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+header a {
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* --- Buscador y Filtros --- */
+#searchInput {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    font-size: 1rem;
+}
+
+#categoryFilters {
+    display: flex;                                                /* Botones de categoría en fila */
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.cat-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    border-radius: 20px;                                         /* Estilo de píldora */
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cat-btn.active {                                             /* Botón de categoría seleccionado */
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+    font-weight: 600;
+}
+
+/* --- Grilla de Productos --- */
+#productsContainer {
+    display: grid;                                                /* Disposición en cuadrícula adaptativa */
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.product-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.add-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    margin-top: 12px;
+    font-weight: 500;
+}
+
+.add-btn:hover { background: var(--primary-hover); }
+
+/* --- Vista del Carrito --- */
+.cart-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+    display: grid;                                                /* Grid de 3 columnas */
+    grid-template-columns: 60px 1fr auto;                         /* Columna 1: Miniatura, Columna 2: Info, Columna 3: Controles */
+    align-items: center;
+    gap: 16px;
+}
+
+.cart-item-img {
+    width: 60px;                                                  /* Tamaño miniatura fijo */
+    height: 60px;
+    object-fit: cover;                                            /* Mantiene la proporción de la foto */
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+.cart-details h3 {
+    margin-bottom: 4px;
+}
+
+.cart-price {
+    font-size: 0.9rem;
+    color: #6c757d;                                               /* Color secundario para el precio unitario */
+}
+
+.cart-subtotal {
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.cart-controls {
+    display: flex;                                                /* Controles de cantidad alineados */
+    align-items: center;
+    gap: 8px;                                                     /* Espaciado uniforme entre botones */
+}
+
+/* Regla unificada para igualar altura, bordes y centrado en todos los botones */
+.btn-increase, .btn-decrease, .btn-remove {
+    height: 36px;                                                 /* Altura uniforme de 36px */
+    border-radius: var(--radius);                                 /* Bordes de 8px unificados */
+    display: inline-flex;                                         /* Centrado flex en todos los botones */
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+.btn-increase, .btn-decrease {
+    width: 36px;                                                  /* Botón cuadrado simétrico */
+    background-color: #f1f3f5;                                    /* Fondo claro */
+    color: #000000;                                               /* Símbolo negro intenso */
+    border: 1px solid var(--border-color);
+    font-size: 1.4rem;                                            /* Símbolos + y - grandes y claros */
+    font-weight: 800;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.btn-increase:hover, .btn-decrease:hover {
+    background-color: #e2e6ea;                                    /* Realce al pasar el cursor */
+    border-color: #adb5bd;
+}
+
+.btn-remove {                                                   /* Botón Eliminar estilizado como peligro */
+    background-color: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid #fecdd3;
+    padding: 0 14px;                                              /* Relleno lateral equilibrado */
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-remove:hover {                                             /* Cambio visual al pasar el cursor */
+    background-color: var(--danger);
+    color: #ffffff;
+}
+
+#cartTotal {
+    text-align: right;                                            /* Alineación a la derecha para el total */
+    margin-top: 20px;
+    font-size: 1.4rem;
+}
+/* --- Sección Final de Pago --- */
+.cart-footer {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 2px solid var(--border-color);
+    display: flex;                                                /* Alinea total a la izquierda y botón a la derecha */
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.cart-footer h3 {
+    font-size: 1.5rem;
+    color: #212529;
+}
+
+.btn-checkout {
+    background-color: #198754;                                    /* Color verde para acción principal de pago */
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-checkout:hover {
+    background-color: #146c43;                                    /* Verde oscuro al pasar el cursor */
+}
+.add-btn {
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.add-btn.added {
+    background-color: #198754;                                    /* Cambia a verde al agregar */
+    color: #ffffff;
+    cursor: default;
+}
