@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Admin Food Store</title>
+    <link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+<div class="admin-layout">
+    <!-- Sidebar Fijo -->
+    <aside class="admin-sidebar">
+        <div>
+            <div class="sidebar-brand">
+                🍔 Food Store <span>Admin</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="./index.html" class="sidebar-link active">📊 Dashboard</a>
+                <a href="../categories/index.html" class="sidebar-link">📂 Categorías</a>
+                <a href="../products/index.html" class="sidebar-link">🍕 Productos</a>
+                <a href="../orders/index.html" class="sidebar-link">📦 Pedidos</a>
+                <a href="./panel.html" class="sidebar-link">🛒 Ver Tienda</a>
+            </nav>
+        </div>
+        <div class="sidebar-footer">
+            <button id="btnLogout" class="btn-primary" style="width: 100%; background: #dc2626; border: none; padding: 0.6rem; border-radius: 6px; color: white; cursor: pointer; font-weight: 600;">Cerrar sesión</button>
+        </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="admin-main-content">
+        <div class="admin-header-title">
+            <h1>Dashboard</h1>
+        </div>
+
+        <!-- Tarjetas de Estadísticas Superiores -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📂</div>
+                <div class="stat-info">
+                    <h3 id="statCategories">5</h3>
+                    <p>Total de categorías</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🍕</div>
+                <div class="stat-info">
+                    <h3 id="statProducts">19</h3>
+                    <p>Total de productos</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div class="stat-info">
+                    <h3 id="statOrders">3</h3>
+                    <p>Total de pedidos</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                    <h3 id="statAvailable">18</h3>
+                    <p>Productos disponibles</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resumen del Sistema -->
+        <div class="admin-card" style="padding: 2rem;">
+            <h2 style="margin-top: 0; font-size: 1.2rem; color: #1f2937;">Resumen del sistema</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+                <div>
+                    <h4 style="color: #6b7280; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; margin-bottom: 0.8rem;">Catálogo</h4>
+                    <p style="display: flex; justify-content: space-between; margin: 0.8rem 0; font-size: 0.95rem;"><span>Categorías activas</span> <strong id="sumCatActivas">5</strong></p>
+                    <p style="display: flex; justify-content: space-between; margin: 0.8rem 0; font-size: 0.95rem;"><span>Productos activos</span> <strong id="sumProdActivos">18</strong></p>
+                    <p style="display: flex; justify-content: space-between; margin: 0.8rem 0; font-size: 0.95rem;"><span>Productos inactivos</span> <strong id="sumProdInactivos">1</strong></p>
+                    <p style="display: flex; justify-content: space-between; margin: 0.8rem 0; font-size: 0.95rem;"><span>Usuarios registrados</span> <strong id="sumUsers">2</strong></p>
+                </div>
+                <div>
+                    <h4 style="color: #6b7280; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; margin-bottom: 0.8rem;">Pedidos por estado</h4>
+                    <p style="display: flex; justify-content: space-between; margin: 0.8rem 0; font-size: 0.95rem;"><span>Pendiente</span> <strong id="sumPendiente">1</strong></p>
+                    <p style="display: flex; justify-content: space-between; margin: 0.8rem 0; font-size: 0.95rem;"><span>Confirmado</span> <strong id="sumConfirmado">1</strong></p>
+                    <p style="display: flex; justify-content: space-between; margin: 0.8rem 0; font-size: 0.95rem;"><span>Terminado</span> <strong id="sumTerminado">1</strong></p>
+                    <p style="display: flex; justify-content: space-between; margin: 0.8rem 0; font-size: 0.95rem;"><span>Cancelado</span> <strong id="sumCancelado">0</strong></p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script type="module" src="./dashboard.ts"></script>
+</body>
+</html>

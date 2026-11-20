@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c39b11cc-da69-4c4e-ac65-5e5c50ebacca" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/public/data/categorias.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/data/pedidos.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/data/productos.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/data/usuarios.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/admin/categories/categories.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/admin/categories/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/admin/home/dashboard.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/admin/home/dashboard.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/admin/home/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/admin/home/panel.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/admin/orders/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/admin/orders/orders.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/admin/products/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/admin/products/products.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/client/checkout/checkout.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/client/checkout/checkout.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/client/orders/orders.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/client/orders/orders.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/store/productDetail/productDetail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/store/productDetail/productDetail.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/ordersStorage.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/productsStorage.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Evaluación1-Prog3/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Evaluación1-Prog3/node_modules/.vite/deps/_metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/Evaluación1-Prog3/node_modules/.vite/deps/_metadata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Evaluación1-Prog3/src/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/Evaluación1-Prog3/src/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.vite/deps/_metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.vite/deps/_metadata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/data.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/admin/home/home.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/admin/home/home.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/auth/login/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/auth/login/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/auth/login/login.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/auth/login/login.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/auth/registro/registro.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/auth/registro/registro.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/client/cart/cart.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/client/cart/cart.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/client/home/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/client/home/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/client/home/home.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/client/home/home.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/IUser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/IUser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/Rol.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/Rol.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/categoria.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/categoria.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/product.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/product.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/auth.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/cart.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/cart.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3Lytyp0do2bnNyNJA7Fh1WE1daJ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Olga/Downloads/Evaluación1-Prog3/src/data&quot;,
+    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2026.2.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Olga\Downloads\Evaluación1-Prog3\src\data" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Olga\Downloads\Evaluación1-Prog3\public" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-34e2839f716b-intellij.indexing.shared.core-IU-262.9437.185" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.9437.185" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c39b11cc-da69-4c4e-ac65-5e5c50ebacca" name="Changes" comment="" />
+      <created>1794438402928</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1794438402928</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

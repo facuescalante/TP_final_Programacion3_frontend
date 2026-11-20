@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Finalizar Compra - Food Store</title>
+    <link rel="stylesheet" href="../../../style.css" />
+</head>
+<body>
+<header>
+    <h1>Food Store 🍕</h1>
+    <nav>
+        <a href="../cart/cart.html">← Volver al Carrito</a>
+        <a href="../home/home.html">Ir al Catálogo</a>
+    </nav>
+</header>
+
+<main class="checkout-wrapper">
+    <!-- Columna Izquierda: Formulario de datos de entrega y pago -->
+    <section class="checkout-form-section">
+        <h2>Datos de Entrega y Pago</h2>
+        <form id="checkoutForm">
+            <div class="form-group">
+                <label for="customerName">Nombre y Apellido *</label>
+                <input type="text" id="customerName" required placeholder="Ej: Juan Pérez" />
+            </div>
+
+            <div class="form-group">
+                <label for="customerPhone">Teléfono de contacto *</label>
+                <input type="tel" id="customerPhone" required placeholder="Ej: 11 1234-5678" />
+            </div>
+
+            <div class="form-group">
+                <label for="customerAddress">Dirección de entrega *</label>
+                <input type="text" id="customerAddress" required placeholder="Ej: Av. Libertador 1234, Depto 2B" />
+            </div>
+
+            <div class="form-group">
+                <label for="paymentMethod">Método de pago *</label>
+                <select id="paymentMethod" required>
+                    <option value="Efectivo">Efectivo contra entrega</option>
+                    <option value="Transferencia">Transferencia / Mercado Pago</option>
+                    <option value="Tarjeta">Tarjeta de Débito / Crédito</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="orderNotes">Notas adicionales (opcional)</label>
+                <textarea id="orderNotes" rows="3" placeholder="Ej: El timbre no funciona, golpear fuerte..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary btn-confirm-order">
+                Confirmar Pedido ✅
+            </button>
+        </form>
+    </section>
+
+    <!-- Columna Derecha: Resumen del pedido -->
+    <section class="checkout-summary-section">
+        <h2>Resumen de tu compra</h2>
+        <div id="checkoutItems" class="summary-items"></div>
+        <div id="checkoutTotal" class="summary-total"></div>
+    </section>
+</main>
+
+<script type="module" src="./checkout.ts"></script>
+</body>
+</html>

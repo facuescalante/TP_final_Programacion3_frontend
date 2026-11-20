@@ -1,86 +1,177 @@
-import { PRODUCTS, getCategories } from '../../../data/data'; // Carga datos de productos y categorías
-import { addToCart } from '../../../utils/cart';              // Carga función para agregar al carrito
+import { addToCart } from '../../../utils/cart';
+import { getProducts, decrementProductStock, type IProduct } from '../../../utils/productsStorage';
+import { initUserSession } from '../../../utils/auth'; // <-- 1. IMPORTAR LA FUNCIÓN DE SESIÓN
 
-let selectedCategoryId: number | null = null;                  // Estado de la categoría seleccionada
-let searchTerm = '';                                           // Estado del texto de búsqueda
+interface ICategoria {
+  id: number;
+  nombre: string;
+}
 
-const renderCategories = () => {                               // Renderiza botones de categorías
-  const container = document.getElementById('categoryFilters'); // Contenedor HTML de categorías
-  if (!container) return;                                      // Guarda si no existe el elemento
+let allProducts: IProduct[] = [];
+let allCategories: ICategoria[] = [];
+let currentCategory: number | 'all' = 'all';
+let currentSearch: string = '';
+let currentSort: string = '';
 
-  const categories = getCategories();                          // Obtiene listado de categorías
-  container.innerHTML = `
-    <button class="cat-btn active" data-id="all">Todas</button> 
-    ${categories.map(c => `<button class="cat-btn" data-id="${c.id}">${c.nombre}</button>`).join('')}
-  `;                                                           // "Todas" inicia activo por defecto
+async function initHome() {
+  try {
+    // 2. INICIALIZAR LA SESIÓN (NOMBRE Y BOTÓN CERRAR SESIÓN EN EL HEADER)
+    initUserSession();
 
-  container.addEventListener('click', (e) => {                 // Escucha clics en los botones
-    const target = e.target as HTMLElement;
-    if (target.tagName === 'BUTTON') {
-      const id = target.getAttribute('data-id');
-      selectedCategoryId = id === 'all' || !id ? null : Number(id); // Actualiza ID de categoría
+    // Cargamos los productos desde localStorage (o JSON inicial) y las categorías
+    const [productsData, resCat] = await Promise.all([
+      getProducts(),
+      fetch('/data/categorias.json')
+    ]);
 
-      container.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active')); // Quita selección previa
-      target.classList.add('active');                          // Marca el botón cliqueado como activo
+    const categoriesData: ICategoria[] = await resCat.json();
 
-      renderProducts();                                        // Re-renderiza el catálogo
-    }
+    // Filtro FHU-03: Solo disponibles, no eliminados y con stock > 0
+    allProducts = productsData.filter(p => p.disponible && !p.eliminado && p.stock > 0);
+    allCategories = categoriesData;
+
+    renderCategories();
+    filterAndRenderProducts();
+    setupEventListeners();
+
+  } catch (error) {
+    console.error("Error al cargar los datos del catálogo:", error);
+  }
+}
+
+// Renderizar botones de categorías en #categoryFilters
+function renderCategories() {
+  const container = document.getElementById('categoryFilters');
+  if (!container) return;
+
+  let html = `<button class="category-btn ${currentCategory === 'all' ? 'active' : ''}" data-id="all">Todas</button>`;
+
+  allCategories.forEach(cat => {
+    html += `<button class="category-btn ${currentCategory === cat.id ? 'active' : ''}" data-id="${cat.id}">${cat.nombre}</button>`;
   });
-};
 
-const renderProducts = () => {                                // Renderiza catálogo según filtros
-  const container = document.getElementById('productsContainer'); // Contenedor de productos
-  if (!container) return;                                      // Guarda si no existe el elemento
+  container.innerHTML = html;
+}
 
-  const filtered = PRODUCTS.filter(p => {                      // Aplica filtros de categoría y nombre
-    const matchesCategory = selectedCategoryId === null || p.categoriaId === selectedCategoryId;
-    const matchesSearch = p.nombre.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+// Filtrar y ordenar en tiempo real
+function filterAndRenderProducts() {
+  let result = [...allProducts];
 
-  if (filtered.length === 0) {                                 // Manejo de búsqueda sin resultados
-    container.innerHTML = '<p>No se encontraron productos.</p>';
+  // 1. Filtrar por categoría
+  if (currentCategory !== 'all') {
+    result = result.filter(p => p.categoria && p.categoria.id == currentCategory);
+  }
+
+  // 2. Filtrar por texto de búsqueda en tiempo real
+  if (currentSearch.trim() !== '') {
+    const query = currentSearch.toLowerCase();
+    result = result.filter(p => p.nombre.toLowerCase().includes(query));
+  }
+
+  // 3. Ordenamiento (Corregidos los operadores con guion)
+  if (currentSort === 'az') {
+    result.sort((a, b) => a.nombre.localeCompare(b.nombre));
+  } else if (currentSort === 'za') {
+    result.sort((a, b) => b.nombre.localeCompare(a.nombre));
+  } else if (currentSort === 'asc') {
+    result.sort((a, b) => a.precio - b.precio);
+  } else if (currentSort === 'desc') {
+    result.sort((a, b) => b.precio - a.precio);
+  }
+
+  renderProducts(result);
+}
+
+// Dibujar productos
+function renderProducts(productsToRender: IProduct[]) {
+  const container = document.getElementById("productsContainer");
+  if (!container) return;
+
+  if (productsToRender.length === 0) {
+    container.innerHTML = "<p class='no-results'>No se encontraron productos.</p>";
     return;
   }
 
-  container.innerHTML = filtered.map(p => `
-    <div class="product-card">
-      <img src="${p.imagen}" alt="${p.nombre}" class="product-img" />
-      <h3>${p.nombre}</h3>
-      <p>Precio: $${p.precio}</p>
-      <button class="add-btn" data-id="${p.id}">Agregar al carrito</button>
-    </div>
-  `).join('');                                                 // Inyecta tarjetas dinámicamente
+  container.innerHTML = productsToRender.map(producto => `
+        <div class="card" style="cursor: pointer;">
+            <img src="${producto.imagen}" alt="${producto.nombre}">
+            <div class="card-content">
+                <h3>${producto.nombre}</h3>
+                <p>${producto.descripcion}</p>
+                <p class="price">$${producto.precio}</p>
+                <p class="stock">Stock: ${producto.stock}</p>
+                <button class="btn btn-agregar" data-id="${producto.id}" ${producto.stock === 0 ? 'disabled' : ''}>
+                    ${producto.stock > 0 ? 'Agregar al carrito' : 'Sin stock'}
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
 
-  container.querySelectorAll('.add-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const button = e.currentTarget as HTMLButtonElement;
-      const id = Number(button.getAttribute('data-id'));
-      const product = PRODUCTS.find(p => p.id === id);
+// Eventos
+function setupEventListeners() {
+  // Búsqueda en tiempo real
+  const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+  searchInput?.addEventListener('input', (e) => {
+    currentSearch = (e.target as HTMLInputElement).value;
+    filterAndRenderProducts();
+  });
 
-      if (product) {
-        addToCart(product);                                      // Persiste en localStorage
+  // Ordenamiento
+  const sortSelect = document.getElementById('sortSelect') as HTMLSelectElement;
+  sortSelect?.addEventListener('change', (e) => {
+    currentSort = (e.target as HTMLSelectElement).value;
+    filterAndRenderProducts();
+  });
 
-        // Feedback visual inmediato en el botón
-        const originalText = button.textContent;
-        button.textContent = '¡Agregado! ✓';
-        button.classList.add('added');
-        button.disabled = true;                                  // Evita dobles clics accidentales
+  // Filtro por categoría (delegación de eventos)
+  const categoryFilters = document.getElementById('categoryFilters');
+  categoryFilters?.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (target.classList.contains('category-btn')) {
+      const catId = target.getAttribute('data-id');
+      currentCategory = catId === 'all' ? 'all' : Number(catId);
 
-        // Restaura el estado original después de 1.2 segundos
-        setTimeout(() => {
-          button.textContent = originalText;
-          button.classList.remove('added');
-          button.disabled = false;
-        }, 1200);
+      renderCategories();
+      filterAndRenderProducts();
+    }
+  });
+
+  // Conexión al detalle y agregar al carrito con descuento de stock
+  const container = document.getElementById("productsContainer");
+  container?.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+
+    // 1. Si hizo clic en el botón "Agregar al carrito"
+    if (target.classList.contains("btn-agregar")) {
+      const idProducto = Number(target.getAttribute("data-id"));
+      const productoEncontrado = allProducts.find(p => p.id === idProducto);
+
+      if (productoEncontrado && productoEncontrado.stock > 0) {
+        // addToCart ya descuenta 1 del stock en localStorage
+        const resultado = addToCart(productoEncontrado, 1);
+
+        if (resultado.ok) {
+          productoEncontrado.stock -= 1; // Actualizamos el objeto en memoria para la vista
+          allProducts = allProducts.filter(p => p.stock > 0);
+          filterAndRenderProducts();
+        }
+
+        alert(resultado.message);
       }
-    });
+      return;
+    }
+
+    // 2. Si hizo clic en cualquier otra parte de la tarjeta, va al detalle
+    const card = target.closest(".card");
+    if (card) {
+      const btn = card.querySelector(".btn-agregar");
+      const idProducto = btn?.getAttribute("data-id");
+      if (idProducto) {
+        window.location.href = `../../store/productDetail/productDetail.html?id=${idProducto}`;
+      }
+    }
   });
 }
-document.getElementById('searchInput')?.addEventListener('input', (e) => { // Escucha la búsqueda en vivo
-  searchTerm = (e.target as HTMLInputElement).value;           // Actualiza texto buscado
-  renderProducts();                                            // Filtra productos en tiempo real
-});
 
-renderCategories();                                            // Carga inicial de categorías
-renderProducts();                                           // Carga inicial de productos
+initHome();

@@ -1,22 +1,21 @@
-import { getCart, getCartTotal, updateQuantity, removeFromCart } from '../../../utils/cart'; // Importa las utilidades de gestión del carrito
+import { getCart, getCartTotal, updateQuantity, removeFromCart } from '../../../utils/cart';
 
-const renderCart = (): void => {                                           // Función principal para renderizar la vista del carrito
-    const container = document.getElementById('cartList');                   // Obtiene el elemento contenedor de la lista de productos
-    const totalContainer = document.getElementById('cartTotal');             // Obtiene el elemento contenedor del total y botón de pago
+const renderCart = (): void => {
+    const container = document.getElementById('cartList');
+    const totalContainer = document.getElementById('cartTotal');
 
-    if (!container || !totalContainer) return;                               // Cláusula de guarda: evita errores si los nodos no existen en el DOM
+    if (!container || !totalContainer) return;
 
-    const cart = getCart();                                                  // Obtiene los datos actualizados del carrito desde localStorage
-    const defaultImg = "https://placehold.co/60x60?text=Comida";            // URL de la imagen de respaldo por si falla la carga
+    const cart = getCart();
+    const defaultImg = "https://placehold.co/60x60?text=Comida";
 
-    if (cart.length === 0) {                                                 // Comprueba si el carrito está vacío
-        container.innerHTML = '<p>El carrito está vacío.</p>';               // Inyecta el mensaje de carrito sin productos
-        totalContainer.innerHTML = '';                                       // Limpia el área del total y checkout
-        return;                                                              // Detiene la ejecución de la función
+    if (cart.length === 0) {
+        container.innerHTML = '<p>El carrito está vacío.</p>';
+        totalContainer.innerHTML = '';
+        return;
     }
 
-    // Inyecta las tarjetas dinámicas de cada producto con su miniatura, datos y controles
-    container.innerHTML = cart.map(item => `                                
+    container.innerHTML = cart.map(item => `
     <div class="cart-item">
       <img 
         src="${item.product.imagen || defaultImg}" 
@@ -40,7 +39,6 @@ const renderCart = (): void => {                                           // Fu
     </div>
   `).join('');
 
-    // Inyecta el resumen final con el monto total calculado y el botón de pago
     totalContainer.innerHTML = `
     <div class="cart-footer">
       <h3>Total: $${getCartTotal()}</h3>
@@ -48,44 +46,42 @@ const renderCart = (): void => {                                           // Fu
     </div>
   `;
 
-    attachEventListeners();                                                  // Vincula los eventos de clic a los botones recién inyectados
+    attachEventListeners();
 };
 
-const attachEventListeners = (): void => {                                  // Asigna los escuchadores de eventos interactivos
-    // Escucha el evento de incremento (+1)
+const attachEventListeners = (): void => {
     document.querySelectorAll('.btn-increase').forEach(button => {
         button.addEventListener('click', (e) => {
-            const id = Number((e.target as HTMLElement).getAttribute('data-id')); // Recupera el ID del producto
-            updateQuantity(id, 1);                                           // Aumenta la cantidad en 1
-            renderCart();                                                    // Actualiza la vista dinámicamente
+            const id = Number((e.target as HTMLElement).getAttribute('data-id'));
+            updateQuantity(id, 1);
+            renderCart();
         });
     });
 
-    // Escucha el evento de decremento (-1)
     document.querySelectorAll('.btn-decrease').forEach(button => {
         button.addEventListener('click', (e) => {
-            const id = Number((e.target as HTMLElement).getAttribute('data-id')); // Recupera el ID del producto
-            updateQuantity(id, -1);                                          // Reduce la cantidad en 1 (mínimo 0)
-            renderCart();                                                    // Actualiza la vista dinámicamente
+            const id = Number((e.target as HTMLElement).getAttribute('data-id'));
+            updateQuantity(id, -1);
+            renderCart();
         });
     });
 
-    // Escucha el evento de eliminación completa
     document.querySelectorAll('.btn-remove').forEach(button => {
         button.addEventListener('click', (e) => {
-            const id = Number((e.target as HTMLElement).getAttribute('data-id')); // Recupera el ID del producto
-            removeFromCart(id);                                              // Elimina el producto del arreglo
-            renderCart();                                                    // Actualiza la vista dinámicamente
+            const id = Number((e.target as HTMLElement).getAttribute('data-id'));
+            removeFromCart(id);
+            renderCart();
         });
     });
 
-    // Escucha el evento del botón de redirección hacia el flujo de pago
+    // Manejo del botón de pago (FHU-05)
     document.getElementById('checkoutBtn')?.addEventListener('click', () => {
-        const cart = getCart();                                              // Verifica el contenido del carrito
-        if (cart.length === 0) return;                                       // Cancela la acción si no hay elementos
+        const cart = getCart();
+        if (cart.length === 0) return;
 
-        window.location.href = '';                                               // Redirige a la página de pago
+        // Redirige a tu vista de pago/checkout
+        window.location.href = '../checkout/checkout.html';
     });
 };
 
-document.addEventListener('DOMContentLoaded', renderCart);                   // Inicia el renderizado al cargar completamente el DOM
+document.addEventListener('DOMContentLoaded', renderCart);     // Inicia el renderizado al cargar completamente el DOM

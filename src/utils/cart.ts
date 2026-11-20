@@ -1,45 +1,103 @@
-import type { ICartItem, IProduct } from '../types/product'; // Importa tipos de productos y carrito
+import type { IProduct } from '../types/product';
+import { decrementProductStock, restoreProductStock } from './productsStorage';
 
-const CART_KEY = 'cart';                                     // Clave para almacenamiento en localStorage
+export interface ICartItem {
+    product: IProduct;
+    cantidad: number;
+}
 
-export const getCart = (): ICartItem[] => {                  // Obtiene los ítems guardados en localStorage
-    const data = localStorage.getItem(CART_KEY);            // Recupera la cadena JSON almacenada
-    return data ? JSON.parse(data) : [];                     // Retorna los datos parseados o un arreglo vacío
+const CART_KEY = 'foodstore_cart';
+
+// Obtener carrito
+export const getCart = (): ICartItem[] => {
+    const data = localStorage.getItem(CART_KEY);
+    return data ? JSON.parse(data) : [];
 };
 
-export const updateQuantity = (productId: number, delta: number): void => { // Modifica la cantidad permitiendo llegar a 0
-    let cart = getCart();                                    // Lee el estado actual del carrito
-    const itemIndex = cart.findIndex(item => item.product.id === productId); // Busca la posición del producto
+// Guardar carrito
+const saveCart = (cart: ICartItem[]): void => {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+};
 
-    if (itemIndex !== -1) {                                  // Si el producto existe en el carrito
-        const newQuantity = cart[itemIndex].cantidad + delta; // Calcula la nueva cantidad
-        if (newQuantity >= 0) {                              // Evita cantidades negativas
-            cart[itemIndex].cantidad = newQuantity;         // Actualiza la cantidad (permite valor 0)
-            localStorage.setItem(CART_KEY, JSON.stringify(cart)); // Persiste el cambio
-        }
+// Agregar al carrito (descuenta stock)
+export const addToCart = (product: IProduct, cantidad: number = 1): { ok: boolean; message: string } => {
+    const cart = getCart();
+    const existingIndex = cart.findIndex(item => item.product.id === product.id);
+
+    // Intentamos descontar del stock general
+    const updated = decrementProductStock(product.id, cantidad);
+    if (!updated) {
+        return { ok: false, message: 'No hay suficiente stock disponible.' };
     }
-};
-
-export const removeFromCart = (productId: number): void => {  // Elimina explícitamente un ítem del carrito
-    let cart = getCart();                                    // Carga el carrito actual
-    cart = cart.filter(item => item.product.id !== productId); // Filtra y remueve el producto por ID
-    localStorage.setItem(CART_KEY, JSON.stringify(cart));    // Persiste la lista actualizada
-};
-
-export const addToCart = (product: IProduct): void => {      // Agrega un producto o incrementa su cantidad
-    const cart = getCart();                                  // Recupera el carrito actual
-    const existingIndex = cart.findIndex(item => item.product.id === product.id); // Verifica si ya está agregado
 
     if (existingIndex !== -1) {
-        cart[existingIndex].cantidad += 1;                  // Si existe, incrementa la cantidad
+        cart[existingIndex].cantidad += cantidad;
     } else {
-        cart.push({ product, cantidad: 1 });                 // Si es nuevo, lo agrega con cantidad 1
+        cart.push({ product, cantidad: cantidad });
     }
 
-    localStorage.setItem(CART_KEY, JSON.stringify(cart));    // Persiste el cambio en localStorage
+    saveCart(cart);
+    return { ok: true, message: '¡Producto agregado al carrito!' };
 };
 
-export const getCartTotal = (): number => {                 // Calcula el monto total acumulado
-    const cart = getCart();                                  // Carga los ítems del carrito
-    return cart.reduce((acc, item) => acc + item.product.precio * item.cantidad, 0); // Acumula el subtotal
+// Calcular el total del carrito
+export const getCartTotal = (): number => {
+    const cart = getCart();
+    return cart.reduce((acc, item) => acc + (item.product.precio * item.cantidad), 0);
+};
+
+// Actualizar cantidad (+1 o -1 desde el carrito)
+export const updateQuantity = (productId: number, delta: number): void => {
+    const cart = getCart();
+    const item = cart.find(i => i.product.id === productId);
+
+    if (!item) return;
+
+    if (delta > 0) {
+        // Si aumenta, intentamos descontar 1 del stock
+        const updated = decrementProductStock(productId, 1);
+        if (!updated) {
+            alert("No hay más stock disponible de este producto.");
+            return;
+        }
+        item.cantidad += 1;
+    } else {
+        // Si disminuye, devolvemos 1 al stock
+        restoreProductStock(productId, 1);
+        item.cantidad -= 1;
+
+        if (item.cantidad <= 0) {
+            removeFromCart(productId);
+            return;
+        }
+    }
+
+    saveCart(cart);
+};
+
+// Eliminar producto individual del carrito (devuelve todo su stock)
+export const removeFromCart = (productId: number): void => {
+    let cart = getCart();
+    const itemToRemove = cart.find(i => i.product.id === productId);
+
+    if (itemToRemove) {
+        // Devolvemos toda la cantidad que tenía al stock
+        restoreProductStock(productId, itemToRemove.cantidad);
+    }
+
+    cart = cart.filter(i => i.product.id !== productId);
+    saveCart(cart);
+};
+
+// Vaciar carrito completo devolviendo todo el stock (útil para el checkout)
+export const clearCartAndRestoreStock = (): void => {
+    const cart = getCart();
+    cart.forEach(item => {
+        restoreProductStock(item.product.id, item.cantidad);
+    });
+    localStorage.removeItem(CART_KEY);
+};
+// Vaciar carrito al confirmar una compra (NO devuelve stock)
+export const clearCart = (): void => {
+    localStorage.removeItem(CART_KEY);
 };

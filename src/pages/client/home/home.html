@@ -4,19 +4,43 @@
     <meta charset="UTF-8">
     <title>Food Store - Catálogo</title>
     <link rel="stylesheet" href="../../../style.css">
-
 </head>
 <body>
-<header>
-    <h1>Food Store - Catálogo 🍕🍔🍟</h1>
-    <a href="../cart/cart.html">Ver Carrito 🛒</a>
+<header class="main-header">
+    <div class="header-left">
+        <h1>Food Store 🍕</h1>
+        <nav class="header-nav">
+            <a href="../home/home.html">Tienda</a>
+            <a href="../orders/orders.html">Mis pedidos</a>
+        </nav>
+    </div>
+
+    <div class="header-right">
+        <a href="../cart/cart.html" class="cart-link">🛒</a>
+        <span class="user-greeting" id="userNameDisplay">Usuario</span>
+        <button id="btnLogout" class="btn-logout">Cerrar sesión</button>
+    </div>
 </header>
 <main>
-    <section>
+    <!-- Barra de filtros y búsqueda -->
+    <section class="filters-section">
         <input type="text" id="searchInput" placeholder="Buscar por nombre..." />
+
+        <!-- Selector de ordenamiento -->
+        <select id="sortSelect">
+            <option value="">Ordenar por...</option>
+            <option value="az">Nombre: A - Z</option>
+            <option value="za">Nombre: Z - A</option>
+            <option value="asc">Precio: Menor a Mayor</option>
+            <option value="desc">Precio: Mayor a Menor</option>
+        </select>
+
+        <!-- Contenedor para los botones de categorías -->
         <div id="categoryFilters"></div>
     </section>
-    <section id="productsContainer"></section>
+
+    <!-- Grid de productos -->
+    <section id="productsContainer" class="products-grid"></section>
 </main>
 <script type="module" src="./home.ts"></script>
 </body>
