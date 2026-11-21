@@ -118,9 +118,8 @@ tp_final_front/
 
 ## 🔐 Credenciales de Prueba por Rol
 
-> *Ajustá o verificá los datos exactos configurados en `src/utils/auth.ts` o en la vista de inicio de sesión (`login.html`).*
 
-| Rol | Usuario / Correo | Contraseña | Permisos / Alcance |
-| :--- | :--- | :--- | :--- |
-| **Administrador** | `admin@foodstore.com` *(según `auth.ts`)* | `admin123` *(según `auth.ts`)* | Acceso al panel admin: gestión de productos, categorías y revisión/actualización de estados de pedidos. |
-| **Cliente** | `cliente@foodstore.com` *(según `auth.ts`)* | `cliente123` *(según `auth.ts`)* | Acceso a catálogo, carrito de compras, checkout y generación de pedidos. |
+| Rol | Usuario / Correo          | Contraseña    | Permisos / Alcance |
+| :--- |:--------------------------|:--------------| :--- |
+| **Administrador** | `admin@foodstore.com`     | `admin123`    | Acceso al panel admin: gestión de productos, categorías y revisión/actualización de estados de pedidos. |
+| **Cliente** | `cliente@foodstore.com`   | `cliente123`  | Acceso a catálogo, carrito de compras, checkout y generación de pedidos. |
